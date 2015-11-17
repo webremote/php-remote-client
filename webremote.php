@@ -19,7 +19,7 @@ This file is part of WebRemote.io PHP Remote Client.
 /**
  * webremote.php - PHP Remote Client
  *
- * Version: 1.0.1001
+ * Version: 1.0.1002
  * 
  * For details: https://webremote.io/php-remote-client
  */
@@ -32,7 +32,7 @@ header('X-Powered-By: WebRemote/1.0');
 header('Content-type: application/json');
 
 // Check if the Authentication-header is correct
-if (empty($_SERVER['WEBREMOTE']) || $_SERVER['WEBREMOTE'] = AUTHENTICATION) {
+if (empty($_SERVER['HTTP_X_WEBREMOTE']) || $_SERVER['HTTP_X_WEBREMOTE'] != AUTHENTICATION) {
 	exit('[]');
 }
 
@@ -45,8 +45,8 @@ if (!empty($_POST['task'])) {
 
 	// Start capturing output
 	ob_start();
-	include($tempFP);
-	$response = file_get_contents();
+	include(stream_get_meta_data($tempFP)['uri']);
+	$response = ob_get_contents();
 
 	// Remote the task
 	fclose($tempFP);
